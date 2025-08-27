@@ -3,249 +3,287 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cronograma del Proyecto de Investigación</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <title>Carta Gantt del Proyecto de Investigación</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+        
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #f4f7fa;
+            background-color: #f8f9fa;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            flex-direction: column;
         }
-        /* Custom scrollbar for better aesthetics */
-        .gantt-container::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
+        .container {
+            background-color: #ffffff;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            max-width: 1400px;
+            width: 100%;
         }
-        .gantt-container::-webkit-scrollbar-track {
-            background: #e0e7ff;
-            border-radius: 10px;
+        .instructions {
+            font-size: 0.9rem;
+            color: #555;
+            background-color: #e9ecef;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            text-align: center;
         }
-        .gantt-container::-webkit-scrollbar-thumb {
-            background: #4f46e5;
-            border-radius: 10px;
+        /* Estilos para el SVG */
+        .gantt-chart .grid-line {
+            stroke: #e0e0e0;
+            stroke-width: 1;
+            shape-rendering: crispEdges;
         }
-        .gantt-container::-webkit-scrollbar-thumb:hover {
-            background: #4338ca;
+        .gantt-chart .month-label {
+            font-size: 12px;
+            fill: #666;
         }
-        .milestone-diamond {
-            width: 20px;
-            height: 20px;
-            transform: rotate(45deg);
+        .gantt-chart .year-label {
+            font-size: 16px;
+            font-weight: 600;
+            fill: #333;
+        }
+        .gantt-chart .task-label {
+            font-size: 14px;
+            fill: #343a40;
+        }
+        .gantt-chart .section-label {
+            font-size: 16px;
+            font-weight: 700;
+            fill: #005a9c;
+        }
+        .gantt-chart .task-bar {
+            stroke-width: 0;
+            rx: 6;
+            ry: 6;
+            transition: opacity 0.2s ease-in-out;
+        }
+        .gantt-chart .task-bar:hover {
+            opacity: 0.8;
+        }
+        .gantt-chart .status-default { fill: #6c757d; }
+        .gantt-chart .status-done { fill: #28a745; }
+        .gantt-chart .status-active { fill: #007bff; }
+        .gantt-chart .milestone {
+            fill: #fd7e14;
+            stroke: #fff;
+            stroke-width: 2;
+        }
+        .gantt-chart .today-line {
+            stroke: #dc3545;
+            stroke-width: 2;
+            stroke-dasharray: 6 4;
+        }
+        .gantt-chart .today-label {
+            fill: #dc3545;
+            font-size: 12px;
+            font-weight: bold;
         }
     </style>
 </head>
-<body class="bg-gray-100 p-4 sm:p-6 md:p-8">
-    <div id="capture-area" class="max-w-7xl mx-auto bg-white rounded-2xl shadow-lg p-6 md:p-8 overflow-hidden">
-        <div class="mb-6">
-            <h1 class="text-2xl md:text-3xl font-bold text-gray-800">Cronograma del Proyecto de Investigación</h1>
-            <p class="text-gray-500 mt-1">Duración total estimada: 43 meses (Junio 2025 - Diciembre 2028)</p>
-        </div>
+<body>
 
-        <div class="flex items-center justify-end space-x-4 mb-4 text-sm">
-             <div class="flex items-center"><span class="h-4 w-4 rounded-full bg-emerald-500 mr-2"></span>Completado</div>
-             <div class="flex items-center"><span class="h-4 w-4 rounded-full bg-indigo-500 mr-2"></span>En Progreso</div>
-             <div class="flex items-center"><span class="h-4 w-4 rounded-full bg-gray-300 mr-2"></span>Pendiente</div>
-             <div class="flex items-center"><span class="h-3 w-3 milestone-diamond bg-red-500 mr-3 ml-1"></span>Hito Clave</div>
-        </div>
-
-        <div id="gantt-chart" class="gantt-container overflow-x-auto">
-            <!-- El gráfico se generará aquí con JavaScript -->
-        </div>
-
-        <div class="mt-6 text-center text-gray-500 text-sm">
-            <p>💡 Para exportar, ajuste el tamaño de la ventana y tome una captura de pantalla de esta área.</p>
-        </div>
+<div class="container">
+    <div class="instructions">
+        <strong>Instrucción:</strong> Para guardar, haz clic derecho sobre la imagen y selecciona "Guardar imagen como...". Asegúrate de guardarla con la extensión ".svg".
     </div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const projectData = {
-                startDate: '2025-06-01',
-                endDate: '2028-12-31',
-                phases: [
-                    {
-                        name: 'Fase 1: Planificación y Aprobación',
-                        tasks: [
-                            { name: 'Diseño del protocolo', start: '2025-06', months: 3, status: 'done' },
-                            { name: 'Envío a Comité Ético (U. Chile)', start: '2025-09', months: 1, status: 'pending' },
-                            { name: 'Envío a Comité Investigación (HCSBA)', start: '2025-10', months: 1, status: 'pending' },
-                            { name: 'Envío a Comité Ética (SSMC)', start: '2025-11', months: 1, status: 'pending' },
-                            { name: 'Recepción y Aprobaciones Finales', start: '2025-12', months: 3, status: 'pending' },
-                            { name: 'Preparación para inicio del proyecto', start: '2026-03', months: 2, status: 'pending' },
-                        ]
-                    },
-                    {
-                        name: 'Fase 2: Ejecución y Recolección de Datos',
-                        tasks: [
-                            { name: 'Reclutamiento y recolección de datos', start: '2026-05', months: 7, status: 'active' },
-                            { name: 'Análisis preliminar de los datos', start: '2026-08', months: 0, status: 'milestone' },
-                        ]
-                    },
-                    {
-                        name: 'Fase 3: Análisis y Redacción',
-                        tasks: [
-                            { name: 'Redacción de resultados y discusión', start: '2026-12', months: 3, status: 'pending' },
-                            { name: 'Revisión final junto al tutor', start: '2027-03', months: 1, status: 'pending' },
-                        ]
-                    },
-                    {
-                        name: 'Fase 4: Difusión',
-                        tasks: [
-                            { name: 'Presentación final y publicación', start: '2027-04', months: 21, status: 'pending' },
-                        ]
-                    }
-                ]
-            };
+    <!-- Contenedor del SVG para la carta Gantt -->
+    <svg id="gantt-chart" class="gantt-chart" width="100%" viewBox="0 0 1500 850" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+            <linearGradient id="grad-done" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" style="stop-color:#28a745;stop-opacity:1" />
+                <stop offset="100%" style="stop-color:#218838;stop-opacity:1" />
+            </linearGradient>
+            <linearGradient id="grad-active" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" style="stop-color:#007bff;stop-opacity:1" />
+                <stop offset="100%" style="stop-color:#0056b3;stop-opacity:1" />
+            </linearGradient>
+            <linearGradient id="grad-default" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" style="stop-color:#6c757d;stop-opacity:1" />
+                <stop offset="100%" style="stop-color:#5a6268;stop-opacity:1" />
+            </linearGradient>
+        </defs>
+        
+        <!-- Título del Gráfico -->
+        <text x="750" y="40" font-size="24" font-weight="bold" text-anchor="middle">Cronograma del Proyecto de Investigación</text>
 
-            const ganttChart = document.getElementById('gantt-chart');
-            const today = new Date('2025-08-26'); // Fecha de referencia estática para visualización
-
-            const start = new Date(projectData.startDate);
-            const end = new Date(projectData.endDate);
-
-            let months = [];
-            let currentDate = new Date(start);
-            while (currentDate <= end) {
-                months.push(new Date(currentDate));
-                currentDate.setMonth(currentDate.getMonth() + 1);
-            }
-
-            const totalMonths = months.length;
-            const taskColumnWidth = '280px';
-            const monthColumnWidth = '80px';
-            const totalWidth = `calc(${taskColumnWidth} + ${totalMonths} * ${monthColumnWidth})`;
-            
-            ganttChart.style.minWidth = totalWidth;
-
-            // Crear el contenedor de la grilla
-            const gridContainer = document.createElement('div');
-            gridContainer.className = 'relative grid';
-            gridContainer.style.gridTemplateColumns = `${taskColumnWidth} repeat(${totalMonths}, ${monthColumnWidth})`;
-            
-            // --- Generar Cabecera de Años y Meses ---
-            let years = {};
-            months.forEach((month, i) => {
-                const year = month.getFullYear();
-                if (!years[year]) {
-                    years[year] = { start: i + 2, count: 0 };
-                }
-                years[year].count++;
-            });
-
-            // Fila de Años
-            const yearHeader = document.createElement('div');
-            yearHeader.className = 'sticky top-0 z-20 col-span-1 bg-white border-b-2 border-indigo-200 grid-cell font-semibold text-gray-600 text-sm';
-            gridContainer.appendChild(yearHeader);
-
-            for (const year in years) {
-                const yearCell = document.createElement('div');
-                yearCell.className = 'text-center py-2 border-r border-gray-200';
-                yearCell.innerText = year;
-                yearCell.style.gridColumn = `${years[year].start} / span ${years[year].count}`;
-                gridContainer.appendChild(yearCell);
-            }
-
-            // Fila de Meses
-            const monthHeader = document.createElement('div');
-            monthHeader.className = 'sticky top-10 z-20 col-span-1 bg-white border-b border-gray-200 grid-cell font-semibold text-gray-600 text-sm';
-            gridContainer.appendChild(monthHeader);
-
-            const monthNames = ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"];
-            months.forEach((month, i) => {
-                const monthCell = document.createElement('div');
-                monthCell.className = 'text-center py-2 border-r border-gray-200 text-xs';
-                monthCell.innerText = monthNames[month.getMonth()];
-                monthCell.style.gridColumn = i + 2;
-                gridContainer.appendChild(monthCell);
-            });
-
-            // --- Generar Filas de Tareas y Barras ---
-            let rowIndex = 3; // Inicia después de las cabeceras de año y mes
-            projectData.phases.forEach(phase => {
-                // Fila de la Fase
-                const phaseRow = document.createElement('div');
-                phaseRow.className = 'col-span-1 p-2 font-bold text-indigo-800 bg-indigo-50 border-t border-b border-indigo-100';
-                phaseRow.style.gridRow = rowIndex;
-                phaseRow.innerText = phase.name;
-                gridContainer.appendChild(phaseRow);
-
-                const phaseBg = document.createElement('div');
-                phaseBg.className = 'col-start-2 bg-indigo-50 border-t border-b border-indigo-100';
-                phaseBg.style.gridRow = rowIndex;
-                phaseBg.style.gridColumn = `2 / span ${totalMonths}`;
-                gridContainer.appendChild(phaseBg);
-                rowIndex++;
-
-                // Filas de las Tareas
-                phase.tasks.forEach(task => {
-                    const taskStart = new Date(task.start + '-02'); // Use day 2 to avoid timezone issues
-                    const startMonthIndex = (taskStart.getFullYear() - start.getFullYear()) * 12 + taskStart.getMonth() - start.getMonth();
-
-                    // Etiqueta de la tarea
-                    const taskLabel = document.createElement('div');
-                    taskLabel.className = 'text-sm text-gray-700 p-2 pl-4 border-r border-b border-gray-200 truncate';
-                    taskLabel.style.gridRow = rowIndex;
-                    taskLabel.style.gridColumn = 1;
-                    taskLabel.innerText = task.name;
-                    gridContainer.appendChild(taskLabel);
-                    
-                    // Contenedor de la barra (para alinearla verticalmente)
-                    const barContainer = document.createElement('div');
-                    barContainer.className = 'flex items-center p-1 border-b border-gray-200';
-                    barContainer.style.gridRow = rowIndex;
-                    barContainer.style.gridColumn = `${startMonthIndex + 2} / span ${task.months || 1}`;
-                    
-                    if (task.status === 'milestone') {
-                        barContainer.style.gridColumn = `${startMonthIndex + 2} / span 1`;
-                        const milestone = document.createElement('div');
-                        milestone.className = 'milestone-diamond bg-red-500 mx-auto';
-                        milestone.title = `${task.name} - ${task.start}`;
-                        barContainer.appendChild(milestone);
-                    } else {
-                         const bar = document.createElement('div');
-                        let bgColor = 'bg-gray-300';
-                        if (task.status === 'done') bgColor = 'bg-emerald-500';
-                        if (task.status === 'active') bgColor = 'bg-indigo-500 animate-pulse';
-
-                        bar.className = `h-6 rounded-md ${bgColor} w-full`;
-                        bar.title = `${task.name} (${task.months} meses)`;
-                        barContainer.appendChild(bar);
-                    }
-                    
-                    gridContainer.appendChild(barContainer);
-                    rowIndex++;
-                });
-            });
-
-            // --- Añadir Marcador de "Hoy" ---
-            const todayIndex = (today.getFullYear() - start.getFullYear()) * 12 + today.getMonth() - start.getMonth();
-            if (todayIndex >= 0 && todayIndex < totalMonths) {
-                const todayLine = document.createElement('div');
-                todayLine.className = 'absolute top-0 bottom-0 w-0.5 bg-red-500 opacity-75 z-30';
-                todayLine.style.gridColumn = todayIndex + 2;
-                todayLine.style.gridRow = `1 / span ${rowIndex}`;
+        <!-- Script para generar el gráfico dinámicamente -->
+        <script type="text/javascript">
+            // Configuración del gráfico
+            const chart = document.getElementById('gantt-chart');
+            const tasks = [
+                { phase: 'Fase 1: Planificación y Aprobación', name: 'Diseño del protocolo', start: '2025-06', duration: 3, status: 'done' },
+                { phase: 'Fase 1: Planificación y Aprobación', name: 'Envío a Comité Ético (U. Chile)', start: '2025-09', duration: 1, status: 'default' },
+                { phase: 'Fase 1: Planificación y Aprobación', name: 'Envío a Comité Investigación (HCSBA)', start: '2025-10', duration: 1, status: 'default' },
+                { phase: 'Fase 1: Planificación y Aprobación', name: 'Envío a Comité Ética (SSMC)', start: '2025-11', duration: 1, status: 'default' },
+                { phase: 'Fase 1: Planificación y Aprobación', name: 'Recepción y Aprobaciones Finales', start: '2025-12', duration: 3, status: 'default' },
+                { phase: 'Fase 1: Planificación y Aprobación', name: 'Preparación para inicio del proyecto', start: '2026-03', duration: 2, status: 'default' },
                 
-                const todayLabel = document.createElement('div');
-                todayLabel.className = 'absolute text-xs font-bold text-white bg-red-500 px-2 py-0.5 rounded-b-md';
-                todayLabel.innerText = 'HOY';
-                todayLine.appendChild(todayLabel);
-                
-                gridContainer.appendChild(todayLine);
+                { phase: 'Fase 2: Ejecución y Recolección de Datos', name: 'Reclutamiento y recolección de datos', start: '2026-05', duration: 7, status: 'active' },
+                { phase: 'Fase 2: Ejecución y Recolección de Datos', name: 'Análisis preliminar de los datos', start: '2026-08', duration: 0, status: 'milestone' },
+
+                { phase: 'Fase 3: Análisis y Redacción', name: 'Redacción de resultados y discusión', start: '2026-12', duration: 3, status: 'default' },
+                { phase: 'Fase 3: Análisis y Redacción', name: 'Revisión final junto al tutor', start: '2027-03', duration: 1, status: 'default' },
+
+                { phase: 'Fase 4: Difusión', name: 'Presentación final y publicación', start: '2027-04', duration: 21, status: 'default' }
+            ];
+
+            const chartWidth = 1500;
+            const chartHeight = 850;
+            const leftPadding = 300;
+            const topPadding = 80;
+            const gridWidth = chartWidth - leftPadding - 50;
+            const rowHeight = 40;
+            const barHeight = 20;
+
+            const startDate = new Date('2025-06-01');
+            const endDate = new Date('2028-12-31');
+
+            const totalMonths = (endDate.getFullYear() - startDate.getFullYear()) * 12 + (endDate.getMonth() - startDate.getMonth()) + 1;
+            const monthWidth = gridWidth / totalMonths;
+
+            // Función para obtener el índice del mes
+            function getMonthIndex(dateStr) {
+                const date = new Date(dateStr + '-01');
+                return (date.getFullYear() - startDate.getFullYear()) * 12 + (date.getMonth() - startDate.getMonth());
             }
-            
-            // Añadir líneas de la cuadrícula vertical
+
+            // Dibujar Eje de Tiempo y Cuadrícula
+            const axisGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+            let currentYear = -1;
             for (let i = 0; i < totalMonths; i++) {
-                const gridLine = document.createElement('div');
-                gridLine.className = 'h-full border-r border-gray-200';
-                gridLine.style.gridRow = `3 / span ${rowIndex - 2}`;
-                gridLine.style.gridColumn = i + 2;
-                gridContainer.insertBefore(gridLine, gridContainer.firstChild); // Insertar al fondo
-            }
+                const monthDate = new Date(startDate);
+                monthDate.setMonth(startDate.getMonth() + i);
+                const x = leftPadding + i * monthWidth;
 
-            ganttChart.appendChild(gridContainer);
-        });
-    </script>
+                // Líneas de la cuadrícula vertical
+                const gridLine = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                gridLine.setAttribute('x1', x);
+                gridLine.setAttribute('y1', topPadding);
+                gridLine.setAttribute('x2', x);
+                gridLine.setAttribute('y2', chartHeight - 50);
+                gridLine.setAttribute('class', 'grid-line');
+                axisGroup.appendChild(gridLine);
+
+                // Etiquetas de los meses
+                const monthLabel = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+                monthLabel.setAttribute('x', x + monthWidth / 2);
+                monthLabel.setAttribute('y', topPadding + 20);
+                monthLabel.setAttribute('text-anchor', 'middle');
+                monthLabel.setAttribute('class', 'month-label');
+                monthLabel.textContent = monthDate.toLocaleDateString('es-ES', { month: 'short' });
+                axisGroup.appendChild(monthLabel);
+
+                // Etiquetas de los años
+                if (monthDate.getFullYear() !== currentYear) {
+                    currentYear = monthDate.getFullYear();
+                    const yearLabel = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+                    yearLabel.setAttribute('x', x + monthWidth / 2);
+                    yearLabel.setAttribute('y', topPadding - 5);
+                    yearLabel.setAttribute('text-anchor', 'start');
+                    yearLabel.setAttribute('class', 'year-label');
+                    yearLabel.textContent = currentYear;
+                    axisGroup.appendChild(yearLabel);
+                }
+            }
+            chart.appendChild(axisGroup);
+            
+            // Dibujar Tareas
+            const tasksGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+            let currentY = topPadding + 60;
+            let currentPhase = '';
+
+            tasks.forEach(task => {
+                // Título de la fase
+                if (task.phase !== currentPhase) {
+                    currentPhase = task.phase;
+                    currentY += rowHeight * 0.8; // Espacio extra antes de una nueva fase
+                    const phaseLabel = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+                    phaseLabel.setAttribute('x', 20);
+                    phaseLabel.setAttribute('y', currentY + barHeight / 2 + 5);
+                    phaseLabel.setAttribute('class', 'section-label');
+                    phaseLabel.textContent = task.phase;
+                    tasksGroup.appendChild(phaseLabel);
+                    currentY += rowHeight;
+                }
+
+                // Etiqueta de la tarea
+                const taskLabel = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+                taskLabel.setAttribute('x', 30);
+                taskLabel.setAttribute('y', currentY + barHeight / 2 + 5);
+                taskLabel.setAttribute('class', 'task-label');
+                taskLabel.textContent = task.name;
+                tasksGroup.appendChild(taskLabel);
+
+                const monthIndex = getMonthIndex(task.start);
+                const x = leftPadding + monthIndex * monthWidth;
+                
+                // Dibujar hito o barra de tarea
+                if (task.status === 'milestone') {
+                    const milestoneSize = 12;
+                    const milestone = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+                    const milestoneX = x + (monthWidth / 2) - milestoneSize;
+                    const milestoneY = currentY + (barHeight / 2) - milestoneSize;
+                    milestone.setAttribute('x', milestoneX);
+                    milestone.setAttribute('y', milestoneY);
+                    milestone.setAttribute('width', milestoneSize * 2);
+                    milestone.setAttribute('height', milestoneSize * 2);
+                    milestone.setAttribute('class', 'milestone');
+                    milestone.setAttribute('transform', `rotate(45, ${milestoneX + milestoneSize}, ${milestoneY + milestoneSize})`);
+                    tasksGroup.appendChild(milestone);
+                } else {
+                    const barWidth = task.duration * monthWidth;
+                    const taskBar = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+                    taskBar.setAttribute('x', x);
+                    taskBar.setAttribute('y', currentY);
+                    taskBar.setAttribute('width', barWidth);
+                    taskBar.setAttribute('height', barHeight);
+                    
+                    let fillStyle = 'url(#grad-default)';
+                    if(task.status === 'done') fillStyle = 'url(#grad-done)';
+                    if(task.status === 'active') fillStyle = 'url(#grad-active)';
+                    taskBar.setAttribute('fill', fillStyle);
+                    
+                    taskBar.setAttribute('class', 'task-bar');
+                    tasksGroup.appendChild(taskBar);
+                }
+                
+                currentY += rowHeight;
+            });
+            chart.appendChild(tasksGroup);
+
+            // Dibujar línea de "Hoy"
+            const today = new Date();
+            if (today >= startDate && today <= endDate) {
+                const todayIndex = (today.getFullYear() - startDate.getFullYear()) * 12 + (today.getMonth() - startDate.getMonth()) + (today.getDate() / 30.44); // Aproximación
+                const todayX = leftPadding + todayIndex * monthWidth;
+
+                const todayLine = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                todayLine.setAttribute('x1', todayX);
+                todayLine.setAttribute('y1', topPadding);
+                todayLine.setAttribute('x2', todayX);
+                todayLine.setAttribute('y2', currentY - rowHeight/2);
+                todayLine.setAttribute('class', 'today-line');
+                chart.appendChild(todayLine);
+
+                const todayLabel = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+                todayLabel.setAttribute('x', todayX);
+                todayLabel.setAttribute('y', topPadding - 10);
+                todayLabel.setAttribute('text-anchor', 'middle');
+                todayLabel.setAttribute('class', 'today-label');
+                todayLabel.textContent = 'Hoy';
+                chart.appendChild(todayLabel);
+            }
+        </script>
+    </svg>
+</div>
+
 </body>
 </html>
