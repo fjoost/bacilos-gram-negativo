@@ -90,10 +90,6 @@
 <body>
 
 <div class="container">
-    <div class="instructions">
-        <strong>Instrucción:</strong> Para guardar, haz clic derecho sobre la imagen y selecciona "Guardar imagen como...". Asegúrate de guardarla con la extensión ".svg".
-    </div>
-
     <!-- Contenedor del SVG para la carta Gantt -->
     <svg id="gantt-chart" class="gantt-chart" width="100%" viewBox="0 0 1500 1100" xmlns="http://www.w3.org/2000/svg">
         <defs>
