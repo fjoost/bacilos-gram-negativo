@@ -95,7 +95,7 @@
     </div>
 
     <!-- Contenedor del SVG para la carta Gantt -->
-    <svg id="gantt-chart" class="gantt-chart" width="100%" viewBox="0 0 1500 850" xmlns="http://www.w3.org/2000/svg">
+    <svg id="gantt-chart" class="gantt-chart" width="100%" viewBox="0 0 1500 1100" xmlns="http://www.w3.org/2000/svg">
         <defs>
             <linearGradient id="grad-done" x1="0%" y1="0%" x2="100%" y2="0%">
                 <stop offset="0%" style="stop-color:#28a745;stop-opacity:1" />
@@ -119,32 +119,38 @@
             // Configuración del gráfico
             const chart = document.getElementById('gantt-chart');
             const tasks = [
-                { phase: 'Fase 1: Planificación y Aprobación', name: 'Diseño del protocolo', start: '2025-06', duration: 3, status: 'done' },
-                { phase: 'Fase 1: Planificación y Aprobación', name: 'Envío a Comité Ético (U. Chile)', start: '2025-09', duration: 1, status: 'default' },
-                { phase: 'Fase 1: Planificación y Aprobación', name: 'Envío a Comité Investigación (HCSBA)', start: '2025-10', duration: 1, status: 'default' },
-                { phase: 'Fase 1: Planificación y Aprobación', name: 'Envío a Comité Ética (SSMC)', start: '2025-11', duration: 1, status: 'default' },
-                { phase: 'Fase 1: Planificación y Aprobación', name: 'Recepción y Aprobaciones Finales', start: '2025-12', duration: 3, status: 'default' },
-                { phase: 'Fase 1: Planificación y Aprobación', name: 'Preparación para inicio del proyecto', start: '2026-03', duration: 2, status: 'default' },
+                { phase: 'Fase 1: Planificación y Aprobación', name: 'Diseño y Redacción del Protocolo', start: '2025-08', duration: 2, status: 'active' },
+                { phase: 'Fase 1: Planificación y Aprobación', name: 'Aprob. Comité U. Chile', start: '2025-10', duration: 2, status: 'default' },
+                { phase: 'Fase 1: Planificación y Aprobación', name: 'Aprob. Comisión HCSBA', start: '2025-12', duration: 2, status: 'default' },
+                { phase: 'Fase 1: Planificación y Aprobación', name: 'Aprob. Final Comité Ética SSMC', start: '2026-02', duration: 2, status: 'default' },
+                { phase: 'Fase 1: Planificación y Aprobación', name: 'Preparación Logística y de Campo', start: '2026-04', duration: 1, status: 'default' },
                 
-                { phase: 'Fase 2: Ejecución y Recolección de Datos', name: 'Reclutamiento y recolección de datos', start: '2026-05', duration: 7, status: 'active' },
-                { phase: 'Fase 2: Ejecución y Recolección de Datos', name: 'Análisis preliminar de los datos', start: '2026-08', duration: 0, status: 'milestone' },
+                { phase: 'Fase 2: Ejecución (Trabajo de Campo)', name: 'Reclutamiento y Consentimiento', start: '2026-04', duration: 8, status: 'default' },
+                { phase: 'Fase 2: Ejecución (Trabajo de Campo)', name: 'Recolección de Datos', start: '2026-04', duration: 8, status: 'default' },
+                { phase: 'Fase 2: Ejecución (Trabajo de Campo)', name: 'Cierre y Análisis Preliminar', start: '2026-11', duration: 1, status: 'default' },
 
-                { phase: 'Fase 3: Análisis y Redacción', name: 'Redacción de resultados y discusión', start: '2026-12', duration: 3, status: 'default' },
-                { phase: 'Fase 3: Análisis y Redacción', name: 'Revisión final junto al tutor', start: '2027-03', duration: 1, status: 'default' },
-
-                { phase: 'Fase 4: Difusión', name: 'Presentación final y publicación', start: '2027-04', duration: 21, status: 'default' }
+                { phase: 'Fase 3: Análisis y Redacción', name: 'Depuración Base de Datos', start: '2026-12', duration: 1, status: 'default' },
+                { phase: 'Fase 3: Análisis y Redacción', name: 'Análisis Estadístico Formal', start: '2027-01', duration: 1, status: 'default' },
+                { phase: 'Fase 3: Análisis y Redacción', name: 'Interpretación y Conclusiones', start: '2027-02', duration: 2, status: 'default' },
+                { phase: 'Fase 3: Análisis y Redacción', name: 'Redacción Borrador Manuscrito', start: '2027-03', duration: 7, status: 'default' },
+                { phase: 'Fase 3: Análisis y Redacción', name: 'Revisión con Tutor (Abril)', start: '2027-04', duration: 1, status: 'default' },
+                { phase: 'Fase 3: Análisis y Redacción', name: 'Revisión con Tutor (Junio)', start: '2027-06', duration: 1, status: 'default' },
+                { phase: 'Fase 3: Análisis y Redacción', name: 'Revisión con Tutor (Septiembre)', start: '2027-09', duration: 1, status: 'default' },
+                
+                { phase: 'Fase 4: Difusión', name: 'Sometimiento a Revista', start: '2027-10', duration: 3, status: 'default' },
+                { phase: 'Fase 4: Difusión', name: 'Publicación de resultados', start: '2028-01', duration: 1, status: 'default' }
             ];
 
             const chartWidth = 1500;
-            const chartHeight = 850;
+            const chartHeight = 1100;
             const leftPadding = 300;
             const topPadding = 80;
             const gridWidth = chartWidth - leftPadding - 50;
             const rowHeight = 40;
             const barHeight = 20;
 
-            const startDate = new Date('2025-06-01');
-            const endDate = new Date('2028-12-31');
+            const startDate = new Date('2025-08-01');
+            const endDate = new Date('2028-02-28'); // Corrected end date to tighten the timeline
 
             const totalMonths = (endDate.getFullYear() - startDate.getFullYear()) * 12 + (endDate.getMonth() - startDate.getMonth()) + 1;
             const monthWidth = gridWidth / totalMonths;
@@ -159,8 +165,10 @@
             const axisGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g');
             let currentYear = -1;
             for (let i = 0; i < totalMonths; i++) {
-                const monthDate = new Date(startDate);
-                monthDate.setMonth(startDate.getMonth() + i);
+                const year = startDate.getFullYear() + Math.floor((startDate.getMonth() + i) / 12);
+                const month = (startDate.getMonth() + i) % 12;
+                const monthDate = new Date(year, month, 1);
+                
                 const x = leftPadding + i * monthWidth;
 
                 // Líneas de la cuadrícula vertical
@@ -185,7 +193,7 @@
                 if (monthDate.getFullYear() !== currentYear) {
                     currentYear = monthDate.getFullYear();
                     const yearLabel = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-                    yearLabel.setAttribute('x', x + monthWidth / 2);
+                    yearLabel.setAttribute('x', x);
                     yearLabel.setAttribute('y', topPadding - 5);
                     yearLabel.setAttribute('text-anchor', 'start');
                     yearLabel.setAttribute('class', 'year-label');
@@ -204,14 +212,26 @@
                 // Título de la fase
                 if (task.phase !== currentPhase) {
                     currentPhase = task.phase;
-                    currentY += rowHeight * 0.8; // Espacio extra antes de una nueva fase
-                    const phaseLabel = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-                    phaseLabel.setAttribute('x', 20);
-                    phaseLabel.setAttribute('y', currentY + barHeight / 2 + 5);
-                    phaseLabel.setAttribute('class', 'section-label');
-                    phaseLabel.textContent = task.phase;
-                    tasksGroup.appendChild(phaseLabel);
-                    currentY += rowHeight;
+                    // Add a new section for Fase 4: Difusión
+                    if (task.phase === 'Fase 4: Difusión' && currentPhase !== 'Fase 3: Análisis y Redacción') {
+                         currentY += rowHeight * 0.8; 
+                         const phaseLabel = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+                         phaseLabel.setAttribute('x', 20);
+                         phaseLabel.setAttribute('y', currentY + barHeight / 2 + 5);
+                         phaseLabel.setAttribute('class', 'section-label');
+                         phaseLabel.textContent = currentPhase;
+                         tasksGroup.appendChild(phaseLabel);
+                         currentY += rowHeight;
+                    } else if (currentPhase !== '') {
+                        currentY += rowHeight * 0.8; // Espacio extra antes de una nueva fase
+                        const phaseLabel = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+                        phaseLabel.setAttribute('x', 20);
+                        phaseLabel.setAttribute('y', currentY + barHeight / 2 + 5);
+                        phaseLabel.setAttribute('class', 'section-label');
+                        phaseLabel.textContent = task.phase;
+                        tasksGroup.appendChild(phaseLabel);
+                        currentY += rowHeight;
+                    }
                 }
 
                 // Etiqueta de la tarea
@@ -287,3 +307,4 @@
 
 </body>
 </html>
+
