@@ -31,8 +31,26 @@
             background-color: #e9ecef;
             padding: 1rem;
             border-radius: 8px;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+        .download-container {
             margin-bottom: 2rem;
             text-align: center;
+        }
+        .download-btn {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .download-btn:hover {
+            background-color: #0056b3;
         }
         /* Estilos para el SVG */
         .gantt-chart .grid-line {
@@ -90,6 +108,13 @@
 <body>
 
 <div class="container">
+    <div class="instructions">
+        <strong>Instrucción:</strong> Para guardar como SVG, haz clic derecho sobre la imagen y selecciona "Guardar imagen como...".
+    </div>
+    <div class="download-container">
+        <button id="download-btn" class="download-btn">Descargar como PNG</button>
+    </div>
+
     <!-- Contenedor del SVG para la carta Gantt -->
     <svg id="gantt-chart" class="gantt-chart" width="100%" viewBox="0 0 1500 1100" xmlns="http://www.w3.org/2000/svg">
         <defs>
@@ -106,6 +131,9 @@
                 <stop offset="100%" style="stop-color:#5a6268;stop-opacity:1" />
             </linearGradient>
         </defs>
+        
+        <!-- Fondo blanco para la exportación PNG -->
+        <rect width="100%" height="100%" fill="#ffffff"/>
         
         <!-- Título del Gráfico -->
         <text x="750" y="40" font-size="24" font-weight="bold" text-anchor="middle">Cronograma del Proyecto de Investigación</text>
@@ -127,13 +155,13 @@
 
                 { phase: 'Fase 3: Análisis y Redacción', name: 'Depuración Base de Datos', start: '2026-12', duration: 1, status: 'default' },
                 { phase: 'Fase 3: Análisis y Redacción', name: 'Análisis Estadístico Formal', start: '2027-01', duration: 1, status: 'default' },
-                { phase: 'Fase 3: Análisis y Redacción', name: 'Interpretación y Conclusiones', start: '2027-02', duration: 2, status: 'default' },
+                { phase: 'Fase 3: Análisis y Redacción', name: 'Interpretación y Conclusiones', start: '2027-02', duration: 1, status: 'default' },
                 { phase: 'Fase 3: Análisis y Redacción', name: 'Redacción Borrador Manuscrito', start: '2027-03', duration: 7, status: 'default' },
                 { phase: 'Fase 3: Análisis y Redacción', name: 'Revisión con Tutor (Abril)', start: '2027-04', duration: 1, status: 'default' },
                 { phase: 'Fase 3: Análisis y Redacción', name: 'Revisión con Tutor (Junio)', start: '2027-06', duration: 1, status: 'default' },
                 { phase: 'Fase 3: Análisis y Redacción', name: 'Revisión con Tutor (Septiembre)', start: '2027-09', duration: 1, status: 'default' },
                 
-                { phase: 'Fase 4: Difusión', name: 'Sometimiento a Revista', start: '2027-10', duration: 3, status: 'default' },
+                { phase: 'Fase 4: Difusión', name: 'Sometimiento del Manuscrito a Revista', start: '2027-10', duration: 3, status: 'default' },
                 { phase: 'Fase 4: Difusión', name: 'Publicación de resultados', start: '2028-01', duration: 1, status: 'default' }
             ];
 
@@ -145,29 +173,29 @@
             const rowHeight = 40;
             const barHeight = 20;
 
-            const startDate = new Date('2025-08-01');
-            const endDate = new Date('2028-02-28'); // Corrected end date to tighten the timeline
+            // Using UTC dates to avoid timezone issues. Month is 0-indexed (7 = August).
+            const startDate = new Date(Date.UTC(2025, 7, 1)); 
+            const endDate = new Date(Date.UTC(2028, 1, 28));
 
-            const totalMonths = (endDate.getFullYear() - startDate.getFullYear()) * 12 + (endDate.getMonth() - startDate.getMonth()) + 1;
+            const totalMonths = (endDate.getUTCFullYear() - startDate.getUTCFullYear()) * 12 + (endDate.getUTCMonth() - startDate.getUTCMonth()) + 1;
             const monthWidth = gridWidth / totalMonths;
 
-            // Función para obtener el índice del mes
             function getMonthIndex(dateStr) {
-                const date = new Date(dateStr + '-01');
-                return (date.getFullYear() - startDate.getFullYear()) * 12 + (date.getMonth() - startDate.getMonth());
+                const parts = dateStr.split('-');
+                const year = parseInt(parts[0], 10);
+                const month = parseInt(parts[1], 10) - 1; // JS months are 0-indexed
+                const date = new Date(Date.UTC(year, month, 1));
+                return (date.getUTCFullYear() - startDate.getUTCFullYear()) * 12 + (date.getUTCMonth() - startDate.getUTCMonth());
             }
 
-            // Dibujar Eje de Tiempo y Cuadrícula
             const axisGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g');
             let currentYear = -1;
             for (let i = 0; i < totalMonths; i++) {
-                const year = startDate.getFullYear() + Math.floor((startDate.getMonth() + i) / 12);
-                const month = (startDate.getMonth() + i) % 12;
-                const monthDate = new Date(year, month, 1);
+                const monthDate = new Date(startDate.getTime());
+                monthDate.setUTCMonth(startDate.getUTCMonth() + i);
                 
                 const x = leftPadding + i * monthWidth;
 
-                // Líneas de la cuadrícula vertical
                 const gridLine = document.createElementNS('http://www.w3.org/2000/svg', 'line');
                 gridLine.setAttribute('x1', x);
                 gridLine.setAttribute('y1', topPadding);
@@ -176,18 +204,16 @@
                 gridLine.setAttribute('class', 'grid-line');
                 axisGroup.appendChild(gridLine);
 
-                // Etiquetas de los meses
                 const monthLabel = document.createElementNS('http://www.w3.org/2000/svg', 'text');
                 monthLabel.setAttribute('x', x + monthWidth / 2);
                 monthLabel.setAttribute('y', topPadding + 20);
                 monthLabel.setAttribute('text-anchor', 'middle');
                 monthLabel.setAttribute('class', 'month-label');
-                monthLabel.textContent = monthDate.toLocaleDateString('es-ES', { month: 'short' });
+                monthLabel.textContent = monthDate.toLocaleDateString('es-ES', { month: 'short', timeZone: 'UTC' });
                 axisGroup.appendChild(monthLabel);
 
-                // Etiquetas de los años
-                if (monthDate.getFullYear() !== currentYear) {
-                    currentYear = monthDate.getFullYear();
+                if (monthDate.getUTCFullYear() !== currentYear) {
+                    currentYear = monthDate.getUTCFullYear();
                     const yearLabel = document.createElementNS('http://www.w3.org/2000/svg', 'text');
                     yearLabel.setAttribute('x', x);
                     yearLabel.setAttribute('y', topPadding - 5);
@@ -199,38 +225,23 @@
             }
             chart.appendChild(axisGroup);
             
-            // Dibujar Tareas
             const tasksGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g');
             let currentY = topPadding + 60;
             let currentPhase = '';
 
             tasks.forEach(task => {
-                // Título de la fase
                 if (task.phase !== currentPhase) {
                     currentPhase = task.phase;
-                    // Add a new section for Fase 4: Difusión
-                    if (task.phase === 'Fase 4: Difusión' && currentPhase !== 'Fase 3: Análisis y Redacción') {
-                         currentY += rowHeight * 0.8; 
-                         const phaseLabel = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-                         phaseLabel.setAttribute('x', 20);
-                         phaseLabel.setAttribute('y', currentY + barHeight / 2 + 5);
-                         phaseLabel.setAttribute('class', 'section-label');
-                         phaseLabel.textContent = currentPhase;
-                         tasksGroup.appendChild(phaseLabel);
-                         currentY += rowHeight;
-                    } else if (currentPhase !== '') {
-                        currentY += rowHeight * 0.8; // Espacio extra antes de una nueva fase
-                        const phaseLabel = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-                        phaseLabel.setAttribute('x', 20);
-                        phaseLabel.setAttribute('y', currentY + barHeight / 2 + 5);
-                        phaseLabel.setAttribute('class', 'section-label');
-                        phaseLabel.textContent = task.phase;
-                        tasksGroup.appendChild(phaseLabel);
-                        currentY += rowHeight;
-                    }
+                    currentY += rowHeight * 0.8;
+                    const phaseLabel = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+                    phaseLabel.setAttribute('x', 20);
+                    phaseLabel.setAttribute('y', currentY + barHeight / 2 + 5);
+                    phaseLabel.setAttribute('class', 'section-label');
+                    phaseLabel.textContent = task.phase;
+                    tasksGroup.appendChild(phaseLabel);
+                    currentY += rowHeight;
                 }
 
-                // Etiqueta de la tarea
                 const taskLabel = document.createElementNS('http://www.w3.org/2000/svg', 'text');
                 taskLabel.setAttribute('x', 30);
                 taskLabel.setAttribute('y', currentY + barHeight / 2 + 5);
@@ -241,7 +252,6 @@
                 const monthIndex = getMonthIndex(task.start);
                 const x = leftPadding + monthIndex * monthWidth;
                 
-                // Dibujar hito o barra de tarea
                 if (task.status === 'milestone') {
                     const milestoneSize = 12;
                     const milestone = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
@@ -270,15 +280,14 @@
                     taskBar.setAttribute('class', 'task-bar');
                     tasksGroup.appendChild(taskBar);
                 }
-                
                 currentY += rowHeight;
             });
             chart.appendChild(tasksGroup);
 
-            // Dibujar línea de "Hoy"
             const today = new Date();
-            if (today >= startDate && today <= endDate) {
-                const todayIndex = (today.getFullYear() - startDate.getFullYear()) * 12 + (today.getMonth() - startDate.getMonth()) + (today.getDate() / 30.44); // Aproximación
+            const todayUTC = new Date(Date.UTC(today.getFullYear(), today.getMonth(), today.getDate()));
+            if (todayUTC >= startDate && todayUTC <= endDate) {
+                const todayIndex = (todayUTC.getUTCFullYear() - startDate.getUTCFullYear()) * 12 + (todayUTC.getUTCMonth() - startDate.getUTCMonth()) + (todayUTC.getUTCDate() / 30.44);
                 const todayX = leftPadding + todayIndex * monthWidth;
 
                 const todayLine = document.createElementNS('http://www.w3.org/2000/svg', 'line');
@@ -301,6 +310,33 @@
     </svg>
 </div>
 
+<script>
+    document.getElementById('download-btn').addEventListener('click', function() {
+        const svg = document.getElementById('gantt-chart');
+        const svgData = new XMLSerializer().serializeToString(svg);
+        
+        const canvas = document.createElement('canvas');
+        const svgSize = svg.viewBox.baseVal;
+        canvas.width = svgSize.width;
+        canvas.height = svgSize.height;
+        
+        const ctx = canvas.getContext('2d');
+        const img = document.createElement('img');
+        
+        img.setAttribute('src', 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(svgData))));
+        
+        img.onload = function() {
+            ctx.drawImage(img, 0, 0);
+            
+            const a = document.createElement('a');
+            a.download = 'cronograma_proyecto.png';
+            a.href = canvas.toDataURL('image/png');
+            a.click();
+        };
+    });
+</script>
+
 </body>
 </html>
+
 
