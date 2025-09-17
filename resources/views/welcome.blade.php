@@ -3,340 +3,168 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Carta Gantt del Proyecto de Investigación</title>
+    <title>Manejo del RN Expuesto a Varicela Materna</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
-        
         body {
-            font-family: 'Inter', sans-serif;
-            background-color: #f8f9fa;
-            color: #333;
+            font-family: Arial, sans-serif;
+            background-color: #f0f8ff;
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 2rem;
-            flex-direction: column;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
         }
         .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            width: 100%;
+            max-width: 1000px;
+        }
+        .node {
             background-color: #ffffff;
-            border-radius: 12px;
-            padding: 2rem;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-            max-width: 1400px;
+            border: 2px solid #87CEEB;
+            border-radius: 10px;
+            padding: 12px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            position: relative;
+            min-width: 180px;
+        }
+        .start-node {
+            background-color: #0077b6;
+            color: white;
+            padding: 15px 25px;
+            font-size: 1.2em;
+            border-color: #005a8d;
+        }
+        .decision-node {
+            background-color: #b0e0e6;
+            font-style: italic;
+        }
+        .action-node {
+            background-color: #e0f7fa;
+        }
+        .critical-node {
+            background-color: #ffcdd2;
+            border-color: #c62828;
+        }
+        .row {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 30px;
             width: 100%;
         }
-        .instructions {
-            font-size: 0.9rem;
-            color: #555;
-            background-color: #e9ecef;
-            padding: 1rem;
-            border-radius: 8px;
-            margin-bottom: 1rem;
-            text-align: center;
+        .branch {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            position: relative;
+            flex: 1;
         }
-        .download-container {
-            margin-bottom: 2rem;
-            text-align: center;
+        .connector-path {
+            position: relative;
+            width: 100%;
+            display: flex;
+            justify-content: center;
         }
-        .download-btn {
-            background-color: #007bff;
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            font-size: 16px;
-            font-weight: 600;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
+        .connector-horizontal {
+            position: absolute;
+            height: 2px;
+            background-color: #0077b6;
+            top: -25px;
         }
-        .download-btn:hover {
-            background-color: #0056b3;
+        .connector-vertical {
+            width: 2px;
+            height: 25px;
+            background-color: #0077b6;
         }
-        /* Estilos para el SVG */
-        .gantt-chart .grid-line {
-            stroke: #e0e0e0;
-            stroke-width: 1;
-            shape-rendering: crispEdges;
-        }
-        .gantt-chart .month-label {
-            font-size: 12px;
-            fill: #666;
-        }
-        .gantt-chart .year-label {
-            font-size: 16px;
-            font-weight: 600;
-            fill: #333;
-        }
-        .gantt-chart .task-label {
-            font-size: 14px;
-            fill: #343a40;
-        }
-        .gantt-chart .section-label {
-            font-size: 16px;
-            font-weight: 700;
-            fill: #005a9c;
-        }
-        .gantt-chart .task-bar {
-            stroke-width: 0;
-            rx: 6;
-            ry: 6;
-            transition: opacity 0.2s ease-in-out;
-        }
-        .gantt-chart .task-bar:hover {
-            opacity: 0.8;
-        }
-        .gantt-chart .status-default { fill: #6c757d; }
-        .gantt-chart .status-done { fill: #28a745; }
-        .gantt-chart .status-active { fill: #007bff; }
-        .gantt-chart .milestone {
-            fill: #fd7e14;
-            stroke: #fff;
-            stroke-width: 2;
-        }
-        .gantt-chart .today-line {
-            stroke: #dc3545;
-            stroke-width: 2;
-            stroke-dasharray: 6 4;
-        }
-        .gantt-chart .today-label {
-            fill: #dc3545;
-            font-size: 12px;
+        .label {
+            background-color: #f0f8ff;
+            padding: 2px 8px;
+            font-size: 0.9em;
             font-weight: bold;
+            color: #333;
+            border: 1px solid #b0e0e6;
+            border-radius: 15px;
+            margin-bottom: 5px;
+        }
+        h1 {
+            color: #005a8d;
+            text-align: center;
+            width: 100%;
         }
     </style>
 </head>
 <body>
+    <div class="container">
+        <h1>Manejo del Recién Nacido Expuesto a Varicela Materna</h1>
+        <div class="node start-node">Neonato Expuesto</div>
 
-<div class="container">
-    <div class="instructions">
-        <strong>Instrucción:</strong> Para guardar como SVG, haz clic derecho sobre la imagen y selecciona "Guardar imagen como...".
+        <div class="connector-path">
+            <div class="connector-vertical"></div>
+            <div class="connector-horizontal" style="width: 80%; left: 10%;"></div>
+        </div>
+
+        <div class="row">
+            <div class="branch">
+                <div class="connector-vertical"></div>
+                <div class="label" style="background-color: #ffdcb3; border-color: #ff8c00;">Infección Materna < 20 sem</div>
+                <div class="node">
+                    <strong>Riesgo de Síndrome de Varicela Congénita</strong><br>
+                    <small>Cicatrices, hipoplasia de miembros, alt. oculares/SNC.</small>
+                </div>
+            </div>
+            <div class="branch">
+                <div class="connector-vertical"></div>
+                <div class="label" style="background-color: #c8e6c9; border-color: #388e3c;">Erupción Materna >5 días ANTES del parto</div>
+                <div class="node action-node">
+                    <strong>Bajo Riesgo</strong><br>
+                    RN recibió anticuerpos maternos.
+                    <hr style="border-color: #87CEEB; margin: 5px 0;">
+                    <strong>Conducta:</strong> Observación clínica.
+                </div>
+            </div>
+            <div class="branch">
+                <div class="connector-vertical"></div>
+                <div class="label" style="background-color: #ffcdd2; border-color: #c62828;">Erupción Materna Periparto<br>(-5 días a +2 días del parto)</div>
+                <div class="node critical-node">
+                    <strong>¡ALTO RIESGO!</strong><br>
+                    RN recibe virus SIN anticuerpos.
+                </div>
+                <div class="connector-path">
+                     <div class="connector-vertical"></div>
+                </div>
+                 <div class="node decision-node">¿Neonato sintomático?</div>
+                 <div class="connector-path">
+                    <div class="connector-vertical"></div>
+                    <div class="connector-horizontal" style="width: 100%; left: 0;"></div>
+                 </div>
+                 <div class="row">
+                    <div class="branch">
+                        <div class="connector-vertical"></div>
+                        <div class="label" style="font-size:0.8em">NO (Asintomático)</div>
+                        <div class="node action-node">
+                           <strong>PROFILAXIS</strong><br>
+                           Dar VZIG Inmediata
+                        </div>
+                    </div>
+                     <div class="branch">
+                        <div class="connector-vertical"></div>
+                        <div class="label" style="font-size:0.8em">SÍ (Lesiones)</div>
+                        <div class="node critical-node">
+                           <strong>TRATAMIENTO</strong><br>
+                           Iniciar Aciclovir IV
+                        </div>
+                    </div>
+                 </div>
+            </div>
+        </div>
     </div>
-    <div class="download-container">
-        <button id="download-btn" class="download-btn">Descargar como PNG</button>
-    </div>
-
-    <!-- Contenedor del SVG para la carta Gantt -->
-    <svg id="gantt-chart" class="gantt-chart" width="100%" viewBox="0 0 1500 1100" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-            <linearGradient id="grad-done" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" style="stop-color:#28a745;stop-opacity:1" />
-                <stop offset="100%" style="stop-color:#218838;stop-opacity:1" />
-            </linearGradient>
-            <linearGradient id="grad-active" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" style="stop-color:#007bff;stop-opacity:1" />
-                <stop offset="100%" style="stop-color:#0056b3;stop-opacity:1" />
-            </linearGradient>
-            <linearGradient id="grad-default" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" style="stop-color:#6c757d;stop-opacity:1" />
-                <stop offset="100%" style="stop-color:#5a6268;stop-opacity:1" />
-            </linearGradient>
-        </defs>
-        
-        <!-- Fondo blanco para la exportación PNG -->
-        <rect width="100%" height="100%" fill="#ffffff"/>
-        
-        <!-- Título del Gráfico -->
-        <text x="750" y="40" font-size="24" font-weight="bold" text-anchor="middle">Cronograma del Proyecto de Investigación</text>
-
-        <!-- Script para generar el gráfico dinámicamente -->
-        <script type="text/javascript">
-            // Configuración del gráfico
-            const chart = document.getElementById('gantt-chart');
-            const tasks = [
-                { phase: 'Fase 1: Planificación y Aprobación', name: 'Diseño y Redacción del Protocolo', start: '2025-08', duration: 2, status: 'active' },
-                { phase: 'Fase 1: Planificación y Aprobación', name: 'Aprob. Comité U. Chile', start: '2025-10', duration: 2, status: 'default' },
-                { phase: 'Fase 1: Planificación y Aprobación', name: 'Aprob. Comisión HCSBA', start: '2025-12', duration: 2, status: 'default' },
-                { phase: 'Fase 1: Planificación y Aprobación', name: 'Aprob. Final Comité Ética SSMC', start: '2026-02', duration: 2, status: 'default' },
-                { phase: 'Fase 1: Planificación y Aprobación', name: 'Preparación Logística y de Campo', start: '2026-04', duration: 1, status: 'default' },
-                
-                { phase: 'Fase 2: Ejecución (Trabajo de Campo)', name: 'Reclutamiento y Consentimiento', start: '2026-04', duration: 8, status: 'default' },
-                { phase: 'Fase 2: Ejecución (Trabajo de Campo)', name: 'Recolección de Datos', start: '2026-04', duration: 8, status: 'default' },
-                { phase: 'Fase 2: Ejecución (Trabajo de Campo)', name: 'Cierre y Análisis Preliminar', start: '2026-11', duration: 1, status: 'default' },
-
-                { phase: 'Fase 3: Análisis y Redacción', name: 'Depuración Base de Datos', start: '2026-12', duration: 1, status: 'default' },
-                { phase: 'Fase 3: Análisis y Redacción', name: 'Análisis Estadístico Formal', start: '2027-01', duration: 1, status: 'default' },
-                { phase: 'Fase 3: Análisis y Redacción', name: 'Interpretación y Conclusiones', start: '2027-02', duration: 1, status: 'default' },
-                { phase: 'Fase 3: Análisis y Redacción', name: 'Redacción Borrador Manuscrito', start: '2027-03', duration: 7, status: 'default' },
-                { phase: 'Fase 3: Análisis y Redacción', name: 'Revisión con Tutor (Abril)', start: '2027-04', duration: 1, status: 'default' },
-                { phase: 'Fase 3: Análisis y Redacción', name: 'Revisión con Tutor (Junio)', start: '2027-06', duration: 1, status: 'default' },
-                { phase: 'Fase 3: Análisis y Redacción', name: 'Revisión con Tutor (Septiembre)', start: '2027-09', duration: 1, status: 'default' },
-                
-                { phase: 'Fase 4: Difusión', name: 'Sometimiento del Manuscrito a Revista', start: '2027-10', duration: 3, status: 'default' },
-                { phase: 'Fase 4: Difusión', name: 'Publicación de resultados', start: '2028-01', duration: 1, status: 'default' }
-            ];
-
-            const chartWidth = 1500;
-            const chartHeight = 1100;
-            const leftPadding = 300;
-            const topPadding = 80;
-            const gridWidth = chartWidth - leftPadding - 50;
-            const rowHeight = 40;
-            const barHeight = 20;
-
-            // Using UTC dates to avoid timezone issues. Month is 0-indexed (7 = August).
-            const startDate = new Date(Date.UTC(2025, 7, 1)); 
-            const endDate = new Date(Date.UTC(2028, 1, 28));
-
-            const totalMonths = (endDate.getUTCFullYear() - startDate.getUTCFullYear()) * 12 + (endDate.getUTCMonth() - startDate.getUTCMonth()) + 1;
-            const monthWidth = gridWidth / totalMonths;
-
-            function getMonthIndex(dateStr) {
-                const parts = dateStr.split('-');
-                const year = parseInt(parts[0], 10);
-                const month = parseInt(parts[1], 10) - 1; // JS months are 0-indexed
-                const date = new Date(Date.UTC(year, month, 1));
-                return (date.getUTCFullYear() - startDate.getUTCFullYear()) * 12 + (date.getUTCMonth() - startDate.getUTCMonth());
-            }
-
-            const axisGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g');
-            let currentYear = -1;
-            for (let i = 0; i < totalMonths; i++) {
-                const monthDate = new Date(startDate.getTime());
-                monthDate.setUTCMonth(startDate.getUTCMonth() + i);
-                
-                const x = leftPadding + i * monthWidth;
-
-                const gridLine = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-                gridLine.setAttribute('x1', x);
-                gridLine.setAttribute('y1', topPadding);
-                gridLine.setAttribute('x2', x);
-                gridLine.setAttribute('y2', chartHeight - 50);
-                gridLine.setAttribute('class', 'grid-line');
-                axisGroup.appendChild(gridLine);
-
-                const monthLabel = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-                monthLabel.setAttribute('x', x + monthWidth / 2);
-                monthLabel.setAttribute('y', topPadding + 20);
-                monthLabel.setAttribute('text-anchor', 'middle');
-                monthLabel.setAttribute('class', 'month-label');
-                monthLabel.textContent = monthDate.toLocaleDateString('es-ES', { month: 'short', timeZone: 'UTC' });
-                axisGroup.appendChild(monthLabel);
-
-                if (monthDate.getUTCFullYear() !== currentYear) {
-                    currentYear = monthDate.getUTCFullYear();
-                    const yearLabel = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-                    yearLabel.setAttribute('x', x);
-                    yearLabel.setAttribute('y', topPadding - 5);
-                    yearLabel.setAttribute('text-anchor', 'start');
-                    yearLabel.setAttribute('class', 'year-label');
-                    yearLabel.textContent = currentYear;
-                    axisGroup.appendChild(yearLabel);
-                }
-            }
-            chart.appendChild(axisGroup);
-            
-            const tasksGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g');
-            let currentY = topPadding + 60;
-            let currentPhase = '';
-
-            tasks.forEach(task => {
-                if (task.phase !== currentPhase) {
-                    currentPhase = task.phase;
-                    currentY += rowHeight * 0.8;
-                    const phaseLabel = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-                    phaseLabel.setAttribute('x', 20);
-                    phaseLabel.setAttribute('y', currentY + barHeight / 2 + 5);
-                    phaseLabel.setAttribute('class', 'section-label');
-                    phaseLabel.textContent = task.phase;
-                    tasksGroup.appendChild(phaseLabel);
-                    currentY += rowHeight;
-                }
-
-                const taskLabel = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-                taskLabel.setAttribute('x', 30);
-                taskLabel.setAttribute('y', currentY + barHeight / 2 + 5);
-                taskLabel.setAttribute('class', 'task-label');
-                taskLabel.textContent = task.name;
-                tasksGroup.appendChild(taskLabel);
-
-                const monthIndex = getMonthIndex(task.start);
-                const x = leftPadding + monthIndex * monthWidth;
-                
-                if (task.status === 'milestone') {
-                    const milestoneSize = 12;
-                    const milestone = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
-                    const milestoneX = x + (monthWidth / 2) - milestoneSize;
-                    const milestoneY = currentY + (barHeight / 2) - milestoneSize;
-                    milestone.setAttribute('x', milestoneX);
-                    milestone.setAttribute('y', milestoneY);
-                    milestone.setAttribute('width', milestoneSize * 2);
-                    milestone.setAttribute('height', milestoneSize * 2);
-                    milestone.setAttribute('class', 'milestone');
-                    milestone.setAttribute('transform', `rotate(45, ${milestoneX + milestoneSize}, ${milestoneY + milestoneSize})`);
-                    tasksGroup.appendChild(milestone);
-                } else {
-                    const barWidth = task.duration * monthWidth;
-                    const taskBar = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
-                    taskBar.setAttribute('x', x);
-                    taskBar.setAttribute('y', currentY);
-                    taskBar.setAttribute('width', barWidth);
-                    taskBar.setAttribute('height', barHeight);
-                    
-                    let fillStyle = 'url(#grad-default)';
-                    if(task.status === 'done') fillStyle = 'url(#grad-done)';
-                    if(task.status === 'active') fillStyle = 'url(#grad-active)';
-                    taskBar.setAttribute('fill', fillStyle);
-                    
-                    taskBar.setAttribute('class', 'task-bar');
-                    tasksGroup.appendChild(taskBar);
-                }
-                currentY += rowHeight;
-            });
-            chart.appendChild(tasksGroup);
-
-            const today = new Date();
-            const todayUTC = new Date(Date.UTC(today.getFullYear(), today.getMonth(), today.getDate()));
-            if (todayUTC >= startDate && todayUTC <= endDate) {
-                const todayIndex = (todayUTC.getUTCFullYear() - startDate.getUTCFullYear()) * 12 + (todayUTC.getUTCMonth() - startDate.getUTCMonth()) + (todayUTC.getUTCDate() / 30.44);
-                const todayX = leftPadding + todayIndex * monthWidth;
-
-                const todayLine = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-                todayLine.setAttribute('x1', todayX);
-                todayLine.setAttribute('y1', topPadding);
-                todayLine.setAttribute('x2', todayX);
-                todayLine.setAttribute('y2', currentY - rowHeight/2);
-                todayLine.setAttribute('class', 'today-line');
-                chart.appendChild(todayLine);
-
-                const todayLabel = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-                todayLabel.setAttribute('x', todayX);
-                todayLabel.setAttribute('y', topPadding - 10);
-                todayLabel.setAttribute('text-anchor', 'middle');
-                todayLabel.setAttribute('class', 'today-label');
-                todayLabel.textContent = 'Hoy';
-                chart.appendChild(todayLabel);
-            }
-        </script>
-    </svg>
-</div>
-
-<script>
-    document.getElementById('download-btn').addEventListener('click', function() {
-        const svg = document.getElementById('gantt-chart');
-        const svgData = new XMLSerializer().serializeToString(svg);
-        
-        const canvas = document.createElement('canvas');
-        const svgSize = svg.viewBox.baseVal;
-        canvas.width = svgSize.width;
-        canvas.height = svgSize.height;
-        
-        const ctx = canvas.getContext('2d');
-        const img = document.createElement('img');
-        
-        img.setAttribute('src', 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(svgData))));
-        
-        img.onload = function() {
-            ctx.drawImage(img, 0, 0);
-            
-            const a = document.createElement('a');
-            a.download = 'cronograma_proyecto.png';
-            a.href = canvas.toDataURL('image/png');
-            a.click();
-        };
-    });
-</script>
-
 </body>
 </html>
-
-
